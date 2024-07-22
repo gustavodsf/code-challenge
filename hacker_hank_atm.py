@@ -14,7 +14,7 @@ class ATM:
         self._password = password
         self._transition_table = transition_table
 
-    def next(self, action: str, param: Optional[str]) -> Tuple[bool, Optional]:
+    def next(self, action: str, param: Optional[str]) -> Tuple[bool, Optional[int]]:
         try:
             for transition_action, check, next_state in self._transition_table[self.state]:
                 if action == transition_action:
@@ -32,23 +32,23 @@ unauthorized = State("unauthorized")
 authorized = State("authorized")
 
 # Define the checkers
-def login_checker(param: Optional[str], atm_password: str, atm_current_balance: int) -> Tuple[bool, int, Optional]:
+def login_checker(param: Optional[str], atm_password: str, atm_current_balance: int) -> Tuple[bool, int, Optional[int]]:
     return (param == atm_password, atm_current_balance, None)
 
-def logout_checker(param: Optional[str], atm_password: str, atm_current_balance: int) -> Tuple[bool, int, Optional]:
+def logout_checker(param: Optional[str], atm_password: str, atm_current_balance: int) -> Tuple[bool, int, Optional[int]]:
     return (True, atm_current_balance, None)
 
-def deposit_checker(param: Optional[str], atm_password: str, atm_current_balance: int) -> Tuple[bool, int, Optional]:
+def deposit_checker(param: Optional[str], atm_password: str, atm_current_balance: int) -> Tuple[bool, int, Optional[int]]:
     amount = int(param)
     return (True, atm_current_balance + amount, None)
 
-def withdraw_checker(param: Optional[str], atm_password: str, atm_current_balance: int) -> Tuple[bool, int, Optional]:
+def withdraw_checker(param: Optional[str], atm_password: str, atm_current_balance: int) -> Tuple[bool, int, Optional[int]]:
     amount = int(param)
     if atm_current_balance >= amount:
         return (True, atm_current_balance - amount, None)
     return (False, atm_current_balance, None)
 
-def balance_checker(param: Optional[str], atm_password: str, atm_current_balance: int) -> Tuple[bool, int, Optional]:
+def balance_checker(param: Optional[str], atm_password: str, atm_current_balance: int) -> Tuple[bool, int, Optional[int]]:
     return (True, atm_current_balance, atm_current_balance)
 
 # Define the transition table
